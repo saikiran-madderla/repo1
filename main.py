@@ -102,7 +102,7 @@ def convert_nanoseconds_to_datetime(dt_with_nanoseconds) -> datetime.datetime:
     return datetime.datetime(
         dt_with_nanoseconds.year,
         dt_with_nanoseconds.month,
-dt_with_nanoseconds.day,
+        dt_with_nanoseconds.day,
         dt_with_nanoseconds.hour,
         dt_with_nanoseconds.minute,
         dt_with_nanoseconds.second,
