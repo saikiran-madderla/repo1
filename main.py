@@ -20,11 +20,11 @@ def send_notification(cloud_event):
     print(f"Received event: {cloud_event}")
  
     # Original base64 decode print (you may keep or remove)
-print(base64.b64decode(cloud_event.data["message"]["data"]))
+    print(base64.b64decode(cloud_event.data["message"]["data"]))
     print('START')
  
     credentials = GoogleCredentials.get_application_default()
-credentials = credentials.create_scoped(['https://www.googleapis.com/auth/cloud-platform'])
+    credentials = credentials.create_scoped(['https://www.googleapis.com/auth/cloud-platform'])
     service = build('cloudresourcemanager', 'v1', credentials=credentials)
     projects = service.projects().list().execute()
  
@@ -34,15 +34,15 @@ credentials = credentials.create_scoped(['https://www.googleapis.com/auth/cloud-
  
     for i, project in enumerate(projects['projects']):
         project_id = project['projectId']
-request.name = f"projects/{project_id}"
+        request.name = f"projects/{project_id}"
         try:
             accounts = iam_admin_client.list_service_accounts(request=request)
             for account in accounts:
-keys = keyinfo(account.name, iam_admin_client)
+                keys = keyinfo(account.name, iam_admin_client)
                 if keys:
                     results.extend(keys)
         except Exception as e:
-print(f"{request.name=}, {e=}")
+            print(f"{request.name=}, {e=}")
         if i > 1000:
             break
  
@@ -82,17 +82,17 @@ def send_mail(keys):
 def keyinfo(account_name, iam_admin_client):
     keys = []
     request = types.ListServiceAccountKeysRequest()
-request.name = account_name
+    request.name = account_name
     request.key_types = [types.ServiceAccountKey.KeyType.USER_MANAGED]
     response = iam_admin_client.list_service_account_keys(request=request)
  
     for key in response.keys:
         valid_after_time = convert_nanoseconds_to_datetime(key.valid_after_time)
         valid_before_time = convert_nanoseconds_to_datetime(key.valid_before_time)
-key_type_name = key.key_type.name
-key_name = key.name.split("/")[-1]
+        key_type_name = key.key_type.name
+        key_name = key.name.split("/")[-1]
         if key_type_name == "USER_MANAGED" and valid_before_time < datetime.datetime(2100, 11, 20, tzinfo=datetime.timezone.utc):
-today = datetime.datetime.now(tz=datetime.timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+            today = datetime.datetime.now(tz=datetime.timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
             gap = valid_before_time - today
             if gap.days > 0:
                 keys.append([account_name, key_name, valid_after_time.strftime("%Y-%m-%d %H:%M:%S%z"), valid_before_time.strftime("%Y-%m-%d %H:%M:%S%z"), str(gap.days)])
