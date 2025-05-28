@@ -35,4 +35,4 @@ jobs:
           --entry-point send_notification \
           --source . \
           --region=us-central1 \
---set-env-vars "username=omg-us-campaign-global,password=boDPlDfOhGswvRUd,sender=gcp_notification_sender@annalect.com,SMTP=mail.smtp2go.com,recipients=saikiran.madderla@annalect.com"
+          --set-env-vars "username=omg-us-campaign-global,password=boDPlDfOhGswvRUd,sender=gcp_notification_sender@annalect.com,SMTP=mail.smtp2go.com,recipients=saikiran.madderla@annalect.com"
